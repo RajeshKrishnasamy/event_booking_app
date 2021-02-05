@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block title %} {{ page_title }} {% endblock %}
+{% block main %}
+<div class="row m-4">
+    <div class="col-md-10 grid-margin-md stretch-card d-flex_">
+        <div class="card">
+          <div class="card-body">
+            <div class="border">
+             {% for event in events %}
+              <div class="border-bottom">
+                <div class="row mx-md-n5">
+                    <div class="col-sm-3 border-right-lg border-right-md-0">
+                      <div class="d-flex justify-content-center align-items-center">
+                        <h1 class="mb-0 mr-2 text-primary font-weight-normal">{{ event.date | date("d") }}</h1>
+                          <div>
+                            <p class="font-weight-bold mb-0 text-dark">{{ event.date | date("m") }}</p>
+                            <p class="mb-0">{{ event.date | date("Y") }}</p>
+                          </div>    
+                      </div>
+                    </div>
+                    <div class="col-sm-6 mt-1">
+                      <p class="text-dark font-weight-bold mb-0"><a href="{{ path('event_view', {id: event.id}) }}">{{ event.name }}</a>
+                      {% if event.status == 0 %}
+                      <span class="badge badge-danger badge-pill">cancelled</span>
+                      {% endif %}
+                      </p>
+                      <p class="mb-0">{{ event.start_time|date('H:i') }} - {{ event.end_time|date('H:i') }}</p>                      
+                    </div>
+                    <div class="col-sm-3 mt-2">
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-primary btn-sm">Edit</a>
+                    <a href="{{ path('event_cancel', {id: event.id}) }}" class="btn btn-danger btn-sm" onsubmit="return confirm('Are you sure you want to cancel this event?');">Cancel</a>
+                    {% endif %}
+                    </div>
+                  </div>
+              </div>
+            {% endfor %}
+            </div>
+          </div>
+        </div>
+    </div>  
+  </div>
+{% endblock %}

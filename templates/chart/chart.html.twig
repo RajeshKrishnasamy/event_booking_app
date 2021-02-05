@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+
+{% block main %}
+  <div class="card m-4">
+  <div class="card-body">
+    <h5 class="card-title"><a href="{{ path('event_view', {id: event.id}) }}">{{ event.name }}</a></h5>
+    <p class="card-text">{{ event.description }}</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">Date - {{ event.date|date('Y-m-d') }}</li>
+    <li class="list-group-item">Time - {{ event.start_time|date('H:i') }} to {{ event.end_time|date('H:i') }}</li>
+  </ul>
+  {% if chartData %}
+    <div class="card-body">
+            <div id="div_chart"></div>
+    </div>
+  {% else %}
+    <h4 class="m-4">No Chart Data found</h4>
+  {% endif %}
+</div>
+   
+{% endblock %}
+
+{% block customjavascripts %}
+{% if chartData %}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript"> {{ gc_draw(piechart, 'div_chart') }} </script>
+{% endif %}
+
+{% endblock %}
