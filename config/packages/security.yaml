@@ -1,14 +1,7 @@
 security:
     encoders:
-        App\Entity\User:
-            algorithm: auto
-        App\Entity\SecurityUser:
-            algorithm: auto
         App\Entity\AppUser:
             algorithm: auto
-
-
-
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
@@ -53,4 +46,4 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/admin/new_event, roles: ROLE_ADMIN }
-       # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/view_chart, roles: ROLE_ADMIN }

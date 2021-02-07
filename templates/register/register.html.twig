@@ -3,14 +3,28 @@
 {% block title %} {{ page_title }} {% endblock %}
 
 {% block main %}
-    {{ form_start(form) }}
-    {{ form_label(form.first_name) }}
-    {{ form_widget(form.first_name) }}
-    {{ form_label(form.last_name) }}
-    {{ form_widget(form.last_name) }}
-    {{ form_label(form.email) }}
-    {{ form_widget(form.email) }}
-    {{ form_widget(form.password) }}
-    {{ form_widget(form.save) }}
-    {{ form_end(form) }}
+    <div id="event">
+    <div class="container">
+        <div id="login-row" class="row justify-content-center align-items-center">
+            <div id="login-column" class="col-md-6">
+                <div id="login-box" class="col-md-12">
+                <h3 class="text-center text-info">Register Form</h3>
+                {{ form_start(form) }}
+                {{ form_label(form.first_name) }}
+                {{ form_widget(form.first_name) }}
+                {{ form_label(form.last_name) }}
+                {{ form_widget(form.last_name) }}
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email) }}
+                {{ form_widget(form.password) }}
+                {{ form_widget(form.termsAccepted) }}
+                <div class="float-right">
+                    {{ form_widget(form.save) }}
+                </div>
+                {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

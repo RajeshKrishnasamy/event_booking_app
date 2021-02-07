@@ -13,7 +13,8 @@
   </ul>
   {% if chartData %}
     <div class="card-body">
-            <div id="div_chart"></div>
+        <div id="div_chart"></div>
+        <a href="{{ path('event_list') }}" class="btn btn-primary">Back to Events</a>
     </div>
   {% else %}
     <h4 class="m-4">No Chart Data found</h4>

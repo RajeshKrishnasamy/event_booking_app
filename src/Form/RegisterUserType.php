@@ -9,8 +9,10 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\IsTrue;
 
 class RegisterUserType extends AbstractType
 {
@@ -27,6 +29,11 @@ class RegisterUserType extends AbstractType
              'second_options' => array('label' => 'Repeat password'),
              ]
             )
+            ->add('termsAccepted', CheckboxType::class, array(
+                'mapped' => false,
+                'constraints' => new IsTrue(),
+                'label' => 'Accept terms and conditions'
+            ))
              ->add('save', SubmitType::class, ['label' => 'register new user'])
         ;
     }

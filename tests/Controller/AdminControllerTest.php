@@ -10,8 +10,7 @@ class AdminControllerTest extends KernelTestCase
 {
     use SecurityTrait;
     protected $manager;
-
-    
+  
     protected function setUp()
     {
         self::bootKernel();

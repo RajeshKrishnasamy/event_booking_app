@@ -29,11 +29,28 @@ class AppUserControllerTest extends WebTestCase
 
     public function testDeleteUser()
     {
-        $appUser = $this->entityManager->getRepository(AppUser::class)->find(2);
+        $appUser = $this->testCreateNewUser();
         $this->entityManager->remove($appUser);
         $this->entityManager->flush();
 
-        $this->assertNull($this->entityManager->getRepository(AppUser::class)->find(2));
+        $this->assertNull($this->entityManager->getRepository(AppUser::class)->findOneBy(array('id' => $appUser->getId())));
         
+    }
+    
+    public function testCreateNewUser(string $role = 'ROLE_USE', bool $persist = false): AppUser
+    {
+        $user = (new AppUser())
+            ->setRoles([$role])
+            ->setEmail(sprintf('test_%s@test.com', strtolower($role)))
+            ->setPassword('test')
+            ->setFirstName('Test')
+            ->setLastName('Test');
+
+        if ($persist) {
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+        }
+        $this->assertInstanceOf('App\Entity\AppUser', $user);
+        return $user;
     }
 }

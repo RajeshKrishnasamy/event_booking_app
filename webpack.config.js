@@ -8,7 +8,7 @@ Encore
     .setPublicPath('/build')
 
     .addEntry('js/app', './build/js/app.js')
-    .addStyleEntry('css/app', ['./build/css/index.scss'])
+    .addStyleEntry('css/app', ['./build/css/app.scss'])
     .autoProvidejQuery()
 ;
 Encore

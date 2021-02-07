@@ -26,7 +26,7 @@ class AppUserController extends AbstractController
     }
 
      /**
-     * @Route("/user/new", name="register", methods={"GET"})
+     * @Route("/user/new", name="register")
      */
     public function register_user(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response {
         $entityManager = $this->getDoctrine()->getManager();

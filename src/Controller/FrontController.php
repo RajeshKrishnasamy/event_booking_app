@@ -34,8 +34,6 @@ class FrontController extends AbstractController
     public function eventView(Event $event): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
-        dump($event->getStartTime()->format('Y-m-d H:i:s'));
-        $entityManager = $this->getDoctrine()->getManager();
         $duration = $this->durationCalculater($event->getStartTime(), $event->getEndTime());
         return $this->render('event/view.html.twig', [
             'event' => $event,

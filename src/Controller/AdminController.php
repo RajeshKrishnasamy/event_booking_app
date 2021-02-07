@@ -37,7 +37,7 @@ class AdminController extends AbstractController
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
         $errors = $form->getErrors(true, false);
-        dump($errors);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $event->setName($form->get('name')->getData());
             $event->setDescription($form->get('description')->getData());
@@ -69,7 +69,7 @@ class AdminController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $user = $entityManager->getRepository(AppUser::class)->find(1);
         $form = $this->createForm(EventType::class, $event);
-        $form->handleRequest($request);
+        $form->handleRequest($request);        
 
         if ($form->isSubmitted() && $form->isValid()) {
             $event->setName($form->get('name')->getData());

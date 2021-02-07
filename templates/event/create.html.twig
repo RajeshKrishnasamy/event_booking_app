@@ -2,6 +2,17 @@
 
 {% block title %} {{ page_title }} {% endblock %}
 {% block main %}
-<h4>Create Event</h4>
-{{form(form)}}
+
+<div id="event">
+    <div class="container">
+        <div id="login-row" class="row justify-content-center align-items-center">
+            <div id="login-column" class="col-md-6">
+                <div id="login-box" class="col-md-12">
+                <h3 class="text-center text-info">Create New Event</h3>
+                {{form(form)}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -16,14 +16,14 @@
   <div class="card-body">
         
     {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{ path('event_chart', {id: event.id}) }}" class="btn btn-primary">Status Report</a>
+        <a href="{{ path('event_chart', {id: event.id}) }}" class="btn btn-success">Status Report</a>
     {% else %}
     <p>Confirm your entry </p>
         <a href="{{ path('event_entry', {id: event.id, option: 'yes' }) }}" class="btn btn-success">Yes</a>
         <a href="{{ path('event_entry', {id: event.id, option: 'no' }) }}" class="btn btn-danger">No</a>
         <a href="{{ path('event_entry', {id: event.id,option: 'maybe' }) }}" class="btn btn-primary">May be</a>
     {% endif %}
-
+    <a href="{{ path('event_list') }}" class="btn btn-primary">Back to Events</a>
   </div>
 </div>
 {% endif %}

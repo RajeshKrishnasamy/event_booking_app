@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Event;
-use Doctrine\DBAL\Types\SmallIntType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -12,6 +11,10 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 
 class EventType extends AbstractType
@@ -33,7 +36,23 @@ class EventType extends AbstractType
             ])
             ->add('end_time', TimeType::class, [
                 'widget' => 'single_text',
-                'label' => 'End Time'
+                'label' => 'End Time',
+                'constraints' => [
+                    new NotBlank(),
+                    new DateTime(),
+                    new Callback(function($object, ExecutionContextInterface $context) {
+                        $obj = $context->getRoot()->getData();
+                        $start = $obj->getStartTime();
+                        $stop = $object;
+                        if (is_a($start, \DateTime::class) && is_a($stop, \DateTime::class)) {
+                            if ($stop->format('U') - $start->format('U') < 0) {
+                                $context
+                                    ->buildViolation('Stop time must be after start time')
+                                    ->addViolation();
+                            }
+                        }
+                    }),
+                ]
             ])
             ->add('seats', NumberType::class,
              ['label' => 'Seats'],
