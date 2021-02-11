@@ -9,8 +9,8 @@ class AppUserControllerTest extends WebTestCase
 {
     private $entityManager;
 
-    protected function setUp(){
-
+    protected function setUp()
+    {
         parent::setUp();
 
         $this->client = static::createClient();
@@ -19,12 +19,11 @@ class AppUserControllerTest extends WebTestCase
         $this->entityManager->getConnection()->setAutoCommit(false);
     }
 
-    protected function tearDown(){
-
+    protected function tearDown()
+    {
         $this->entityManager->rollback();
         $this->entityManager->close();
         $this->entityManager = null;
-
     }
 
     public function testDeleteUser()
@@ -34,9 +33,8 @@ class AppUserControllerTest extends WebTestCase
         $this->entityManager->flush();
 
         $this->assertNull($this->entityManager->getRepository(AppUser::class)->findOneBy(array('id' => $appUser->getId())));
-        
     }
-    
+
     public function testCreateNewUser(string $role = 'ROLE_USE', bool $persist = false): AppUser
     {
         $user = (new AppUser())

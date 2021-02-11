@@ -7,10 +7,12 @@ use App\Entity\Event;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * Class which Creates PieChart Object based on Event and EmployeeEvents
+ */
 
-
-class PieChartService {
-
+class PieChartService
+{
     private $entityManager;
     private $event;
     private $resultData = ['yes' => 0, 'no' => 0, 'maybe' => 0];
@@ -22,17 +24,16 @@ class PieChartService {
         $this->event = $event;
         $this->formatData();
         $this->pieChart = new PieChart();
-
     }
 
-    public function getChartObj() {
-       
+    public function getChartObj()
+    {
         $this->pieChart->getData()->setArrayToDataTable(
             [
-             ['Task', 'Hours per Day'],
-             ['yes',     $this->resultData['yes']],
-             ['no',      $this->resultData['no']],
-             ['maybe',   $this->resultData['maybe']]
+                ['Task', 'Hours per Day'],
+                ['yes',     $this->resultData['yes']],
+                ['no',      $this->resultData['no']],
+                ['maybe',   $this->resultData['maybe']]
             ]
         );
         $this->pieChart->getOptions()->setTitle('Event entry report');
@@ -46,11 +47,11 @@ class PieChartService {
         return $this->pieChart;
     }
 
-    public function formatData() {
-          $entryData = $this->entityManager->getRepository(EmployeeEvents::class)->findByEntryCount($this->event->getId());
-          foreach($entryData as $entryRowData) {
+    public function formatData()
+    {
+        $entryData = $this->entityManager->getRepository(EmployeeEvents::class)->findByEntryCount($this->event->getId());
+        foreach ($entryData as $entryRowData) {
             $this->resultData[$entryRowData['entry']] = $entryRowData['count'];
         }
     }
-
 }

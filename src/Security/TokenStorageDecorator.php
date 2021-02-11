@@ -10,6 +10,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
 
+/**
+ * Class to get user token in TEST
+ */
+
 class TokenStorageDecorator extends TokenStorage
 {
     protected static $decoratedToken = null;

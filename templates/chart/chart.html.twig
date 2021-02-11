@@ -1,6 +1,4 @@
 {% extends 'base.html.twig' %}
-
-
 {% block main %}
   <div class="card m-4">
   <div class="card-body">
@@ -19,8 +17,7 @@
   {% else %}
     <h4 class="m-4">No Chart Data found</h4>
   {% endif %}
-</div>
-   
+</div>   
 {% endblock %}
 
 {% block customjavascripts %}
@@ -28,5 +25,4 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript"> {{ gc_draw(piechart, 'div_chart') }} </script>
 {% endif %}
-
 {% endblock %}

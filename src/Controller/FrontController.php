@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\AppUser;
 use App\Entity\EmployeeEvents;
 use App\Entity\Event;
 use App\Utils\DateAndTimeTrait;
@@ -13,8 +12,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class FrontController extends AbstractController
 {
     use DateAndTimeTrait;
-   
+
     /**
+     * Display all the active Events
+     * Users - ROLE_USER
      * @Route("/event_list", name="event_list")
      */
     public function eventList(): Response
@@ -29,6 +30,8 @@ class FrontController extends AbstractController
     }
 
     /**
+     * View an Event details
+     * Users - ROLE_USER
      * @Route("/event_view/{id}", name="event_view",methods={"GET"})
      */
     public function eventView(Event $event): Response
@@ -43,6 +46,8 @@ class FrontController extends AbstractController
     }
 
     /**
+     * Add an entry to an Event
+     * Users - ROLE_USER
      * @Route("/event_entry/{id}/{option}", name="event_entry", methods={"GET"})
      */
     public function eventEntry($id, $option): Response
@@ -52,7 +57,7 @@ class FrontController extends AbstractController
         $event = $entityManager->getRepository(Event::class)->find($id);
         $currentUser = $this->getUser();
         $employeeEvent = $entityManager->getRepository(EmployeeEvents::class)->findOneBy(array('user_id' => $currentUser->getId(), 'event_id' => $event->getid()));
-        if(!$employeeEvent) {
+        if (!$employeeEvent) {
             $employeeEvent = new EmployeeEvents();
         }
         $employeeEvent->setEventId($event);

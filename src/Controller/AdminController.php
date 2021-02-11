@@ -21,11 +21,12 @@ class AdminController extends AbstractController
 
     public function __construct(Security $security)
     {
-         $this->security = $security;
+        $this->security = $security;
     }
 
     /**
      * Create new event
+     * Users - ROLE_ADMIN
      * @Route("/new_event", name="event_new")
      */
     public function newEvent(Request $request): Response
@@ -61,6 +62,7 @@ class AdminController extends AbstractController
 
     /**
      * Edit Event
+     * Users - ROLE_ADMIN
      * @Route("/event_edit/{id}", name="event_edit", methods={"GET"})
      */
     public function editEvent(Request $request, Event $event): Response
@@ -69,7 +71,7 @@ class AdminController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $user = $entityManager->getRepository(AppUser::class)->find(1);
         $form = $this->createForm(EventType::class, $event);
-        $form->handleRequest($request);        
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $event->setName($form->get('name')->getData());
@@ -93,13 +95,14 @@ class AdminController extends AbstractController
 
     /**
      * Cancel event
+     * Users - ROLE_ADMIN
      * @Route("/cancel_event/{id}", name="event_cancel", methods={"GET"})
      */
     public function cancelEvent(Request $request, Event $event): Response
     {
         $this->denyAccessUnlessGranted('CANCEL', $event);
         $entityManager = $this->getDoctrine()->getManager();
-       if (!$event) {
+        if (!$event) {
             throw $this->createNotFoundException(
                 'There are no such event'
             );
@@ -111,7 +114,8 @@ class AdminController extends AbstractController
     }
 
     /**
-     * Cancel event
+     * View Event Chart
+     * Users - ROLE_ADMIN
      * @Route("/view_chart/{id}", name="event_chart", methods={"GET"})
      */
     public function viewChart(Event $event): Response
@@ -123,12 +127,13 @@ class AdminController extends AbstractController
             $chartData = true;
         }
         $pieChart = $pieChartService->getChartObj();
-        return $this->render('chart/chart.html.twig',
-         [
-             'piechart' => $pieChart,
-             'event' => $event,
-             'chartData' => $chartData
-             ]
+        return $this->render(
+            'chart/chart.html.twig',
+            [
+                'piechart' => $pieChart,
+                'event' => $event,
+                'chartData' => $chartData
+            ]
         );
     }
 }

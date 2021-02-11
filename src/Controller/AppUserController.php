@@ -14,9 +14,12 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class AppUserController extends AbstractController
 {
     /**
+     * Home/Dashboard of the application
+     * Users - anonymous
      * @Route("/home", name="home", methods={"GET"})
      */
-    public function home(Request $request): Response {
+    public function home(Request $request): Response
+    {
         $this->denyAccessUnlessGranted('ROLE_USER');
         $entityManager = $this->getDoctrine()->getManager();
         $user = $entityManager->getRepository(AppUser::class)->findAll();
@@ -25,10 +28,13 @@ class AppUserController extends AbstractController
         ]);
     }
 
-     /**
+    /**
+     * Register for this application
+     * Users - anonymous
      * @Route("/user/new", name="register")
      */
-    public function register_user(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response {
+    public function register_user(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    {
         $entityManager = $this->getDoctrine()->getManager();
         $users = $entityManager->getRepository(AppUser::class)->findAll();
 
@@ -36,7 +42,7 @@ class AppUserController extends AbstractController
         $form = $this->createForm(RegisterUserType::class, $user);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword(
                 $passwordEncoder->encodePassword($user, $form->get('password')->getData())
             );
@@ -48,18 +54,20 @@ class AppUserController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('login');
         }
-      
+
         return $this->render('register/register.html.twig', [
             'page_title' => 'Registration Page',
             'form' => $form->createView()
         ]);
-
     }
 
     /**
+     * Control Register success
+     * Users - anonymous
      * @Route("/user/success", name="register-success")
      */
-    public function register_success(): Response {
+    public function register_success(): Response
+    {
         $entityManager = $this->getDoctrine()->getManager();
         $user = $entityManager->getRepository(AppUser::class)->findAll();
         dump($user);
@@ -69,17 +77,21 @@ class AppUserController extends AbstractController
     }
 
     /**
+     * Login to the system
+     * Users - anonymous
      * @Route("/login", name="login")
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response {
+    public function login(AuthenticationUtils $authenticationUtils): Response
+    {
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastusername = $authenticationUtils->getLastUsername();
 
-        return $this->render('login/login.html.twig', array(
-            'last_username' => $lastusername,
-            'error' => $error
-        )
+        return $this->render(
+            'login/login.html.twig',
+            array(
+                'last_username' => $lastusername,
+                'error' => $error
+            )
         );
-        
     }
 }

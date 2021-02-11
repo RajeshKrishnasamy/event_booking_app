@@ -50,15 +50,5 @@
         <script src="{{ asset('build/js/bootstrap.js') }}"></script>
         <script src="{{ asset('build/js/app.js') }}"></script>
     {% endblock %}
-    {% block customjavascripts %}
-        <script>
-            $(document).ready(function(){
-                console.log("Jquery working properly");
-            })
-            if ($.fn.modal) { 
-                console.log('Bootstrap working properly');
-            }
-        </script>
-    {% endblock %}
 </body>
 </html>

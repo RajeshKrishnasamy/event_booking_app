@@ -9,6 +9,12 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ *  Application data fixtures
+ *  Use - TO load basic user and event data
+ *  Loads Users, Events and Event entry data into DB
+ */
+
 class AppFixtures extends Fixture
 {
     /**
@@ -28,20 +34,25 @@ class AppFixtures extends Fixture
         $this->loadEmployeeEntry($manager);
     }
 
+    /**
+     * Creates random AppUser objects
+     * and Loads AppUser Data ino DB
+     */
+
     private function loadUsers(ObjectManager $manager)
     {
         for ($i = 1; $i < 20; $i++) {
             $user = new AppUser();
-            $firstName = 'first name '.$i;
-            $lastName = 'last name '.$i;
-            $email = 'user'.$i.'@test.com';
+            $firstName = 'first name ' . $i;
+            $lastName = 'last name ' . $i;
+            $email = 'user' . $i . '@test.com';
             $user->setFirstName($firstName);
             $user->setLastName($lastName);
             $user->setEmail($email);
             $user->setPassword(
                 $this->passwordEncoder->encodePassword(
                     $user,
-                    "password".$i
+                    "password" . $i
                 )
             );
             $user->setRoles(['ROLE_USER']);
@@ -51,7 +62,13 @@ class AppFixtures extends Fixture
 
         $manager->flush();
     }
-    private function loadEvents(ObjectManager $manager) {
+
+    /**
+     * Creates random Event objects
+     * and Loads Event Data ino DB
+     */
+    private function loadEvents(ObjectManager $manager)
+    {
 
         // Create super user to create events
         $user = new AppUser();
@@ -71,13 +88,13 @@ class AppFixtures extends Fixture
         $manager->persist($user);
 
         for ($i = 1; $i < 10; $i++) {
-            $endTimeObj= new \DateTime();
+            $endTimeObj = new \DateTime();
             $endTimeObj->add(new \DateInterval("PT1H"));
 
             $event = new Event();
-            $event->setName("event ".$i);
-            $event->setDescription("event description".$i);
-            $event->setSeats(rand(10,100));
+            $event->setName("event " . $i);
+            $event->setDescription("event description" . $i);
+            $event->setSeats(rand(10, 100));
             $event->setDate(new \DateTime());
             $event->setStartTime(new \DateTime());
             $event->setEndTime($endTimeObj);
@@ -88,13 +105,20 @@ class AppFixtures extends Fixture
 
         $manager->flush();
     }
-    private function loadEmployeeEntry(ObjectManager $manager){
+
+    /**
+     * Creates random user EmployeeEvents objects
+     * Uses User data and Event data from DB
+     * and Loads EmployeeEvents Data ino DB
+     */
+    private function loadEmployeeEntry(ObjectManager $manager)
+    {
         $events = $manager->getRepository(Event::class)->findAll();
         $users = $manager->getRepository(AppUser::class)->findAll();
         $entryOptions = ['yes', 'no', 'maybe'];
-        foreach($events as $event) {
+        foreach ($events as $event) {
             for ($i = 1; $i < 10; $i++) {
-                $employeeEvent = new EmployeeEvents();        
+                $employeeEvent = new EmployeeEvents();
                 $employeeEvent->setEventId($event);
                 $employeeEvent->setUserId($users[array_rand($users)]);
                 $employeeEvent->setEntry($entryOptions[array_rand($entryOptions)]);

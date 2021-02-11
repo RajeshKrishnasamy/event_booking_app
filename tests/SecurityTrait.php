@@ -16,7 +16,6 @@ trait SecurityTrait
 
         $tokenStorage = self::$container->get('security.token_storage');
 
-        /** @var TokenStorageDecorator $tokenStorage */
         if ($tokenStorage instanceof TokenStorageDecorator) {
             $tokenStorage->setUser($user);
         } else {
@@ -30,13 +29,12 @@ trait SecurityTrait
 
     public function logout()
     {
-        /** @var TokenStorageDecorator $tokenStorage */
         $tokenStorage = self::$container->get('security.token_storage');
-
         $tokenStorage->setToken(null);
     }
 
-    protected function getUser(string $role = 'ROLE_USER', bool $userFromDatabase = false): AppUser {
+    protected function getUser(string $role = 'ROLE_USER', bool $userFromDatabase = false): AppUser
+    {
         if (empty(self::$users[$role])) {
             self::$users[$role] = $userFromDatabase
                 ? ($this->getFirstUserByRole($role) ?: $this->createNewUser($role, $userFromDatabase))
@@ -48,13 +46,12 @@ trait SecurityTrait
 
     protected function getFirstUserByRole(string $role = 'ROLE_USER'): ?AppUser
     {
-        /** @var EntityManagerInterface $entityManager */
         $entityManager = self::$container->get('doctrine.orm.default_entity_manager');
 
         return $entityManager->getRepository(AppUser::class)
             ->createQueryBuilder('u')
             ->where('u.roles LIKE :role')
-            ->setParameter(':role', '%'.$role.'%')
+            ->setParameter(':role', '%' . $role . '%')
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
@@ -70,9 +67,7 @@ trait SecurityTrait
             ->setLastName('Test');
 
         if ($persist) {
-            /** @var EntityManagerInterface $entityManager */
             $entityManager = self::$container->get('doctrine.orm.default_entity_manager');
-
             $entityManager->persist($user);
             $entityManager->flush();
         }
